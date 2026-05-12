@@ -37,24 +37,37 @@
 
 class Vehicle {
 protected:
-    // TODO: declare protected data members
-    //       std::string make
-    //       int year
-    //       double fuelLevel
+    std::string	_make;
+	int			_year;
+	double		_fuellevel;
 
 public:
-    // TODO: declare constructor
-    //       Vehicle(std::string make, int year, double fuelLevel)
 
-    // TODO: declare getters (const)
-    //       getMake(), getYear(), getFuelLevel()
+	Vehicle(std::string make, int year, double fuellevel) : _make(make), _year(year), _fuellevel(fuellevel) { }
 
-    // TODO: declare refuel(double amount)
-    //       Adds amount to fuelLevel. Max is 100.0. Ignore negative amounts.
+	std::string getMake() const { return _make; }
 
-    // TODO: declare pure virtual describe() returning std::string
+	int getYear() const { return _year; }
 
-    // TODO: declare virtual destructor
+	double getFuelLevel() const { return _fuellevel; }
+
+	void refuel(double amount)
+	{
+		if (_fuellevel > 100.0 || amount < 0)
+			return ;
+		if (_fuellevel + amount >= 100)
+			_fuellevel = 100;
+		else
+			_fuellevel += amount;
+	}
+
+	virtual	std::string describe() const
+	{
+		return "Car: " + _make + " (" + std::to_string(_year) + "), "
+			+ "fuel: " + std::to_string(_fuellevel) + "%";
+	}
+
+	virtual	~Vehicle() = default;
 };
 
 // ----------------------------------------------------------------
@@ -75,14 +88,20 @@ public:
 
 class Car : public Vehicle {
 private:
-    // TODO: int numDoors
+	int	_numDoors;
 
 public:
-    // TODO: Constructor(make, year, fuelLevel, numDoors)
 
-    // TODO: getNumDoors()
+	Car(std::string make, int year, double fuelLevel, int numDoors) : Vehicle(make, year, fuelLevel), _numDoors(numDoors) { }
 
-    // TODO: describe() override
+	int getNumDoors() const { return _numDoors; }
+
+	std::string describe() const override
+	{
+		return "Car: " + _make + " (" + std::to_string(_year) + "), "
+			+ std::to_string(_numDoors) + " doors, fuel: "
+			+ std::to_string(_fuellevel) + "%";
+	}
 };
 
 // ----------------------------------------------------------------
@@ -103,13 +122,20 @@ public:
 
 class Truck : public Vehicle {
 private:
+	double _payloadTons;
     // TODO: double payloadTons
 
 public:
+	Truck(std::string make, int year, double fuelLevel, double payloadTons) : Vehicle(make, year, fuelLevel), _payloadTons(payloadTons) { }
     // TODO: Constructor(make, year, fuelLevel, payloadTons)
-
+	double getPayloadTons() const { return _payloadTons; }
     // TODO: getPayloadTons()
-
+	std::string describe() const override
+	{
+		return "Car: " + _make + " (" + std::to_string(_year) + "), "
+			+ std::to_string(_payloadTons) + " payload, fuel: "
+			+ std::to_string(_fuellevel) + "%";
+	}
     // TODO: describe() override
 };
 
